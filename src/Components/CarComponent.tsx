@@ -1,15 +1,23 @@
-import { InformationData } from "../Mocks/MockDataDashboard";
+import type { SummaryInfo } from "../types/dashboardTypes";
 
-export default function CardComponent() {
+export default function CardComponent({ data }: { data: SummaryInfo[] }) {
   // Paleta de colores suaves para bordes
-  const borderColors = ["#3B82F6", "#22C55E", "#FACC15", "#EF4444", "#A855F7", "#FB923C"];
+  const borderColors = [
+    "#3B82F6",
+    "#22C55E",
+    "#FACC15",
+    "#EF4444",
+    "#A855F7",
+    "#FB923C",
+  ];
 
   // Devuelve un color según el índice (para evitar aleatoriedad entre renders)
-  const getColorByIndex = (index: number) => borderColors[index % borderColors.length];
+  const getColorByIndex = (index: number) =>
+    borderColors[index % borderColors.length];
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-6 px-4 mt-0">
-      {InformationData?.map((x, index) => {
+      {data?.map((x, index) => {
         const color = getColorByIndex(index);
         return (
           <div

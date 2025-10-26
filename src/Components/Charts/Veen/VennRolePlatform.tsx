@@ -12,7 +12,7 @@ interface VennData {
   interseccion: number; // total que pertenecen a ambos grupos
 }
 
-const VennRolPlataforma: React.FC<{ data: VennData }> = ({ data }) => {
+export const VennRolePlatform: React.FC<{ data: VennData }> = ({ data }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -54,12 +54,10 @@ const VennRolPlataforma: React.FC<{ data: VennData }> = ({ data }) => {
   }, [data]);
 
   return (
-    <div className="flex justify-center" style={{ width: '600px' }}>
+    <div className="flex justify-center" style={{ width: "600px" }}>
       <div className="bg-[#1E293B] p-4 rounded-2xl shadow-lg w-full max-w-md">
         <canvas ref={canvasRef}></canvas>
       </div>
     </div>
   );
 };
-
-export default VennRolPlataforma;

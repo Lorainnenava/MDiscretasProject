@@ -11,32 +11,30 @@ interface TreePathsProps {
 export const TreePaths: React.FC<TreePathsProps> = ({ node, positions }) => {
   const paths: { d: string; key: string; color: string }[] = [];
 
-  const buildPaths = (node: TreeNodeType) => {
-    if (!node.children) return;
-    const ppos = positions[node.id];
-    if (!ppos) return;
-    node.children.forEach((child) => {
-      const cpos = positions[child.id];
-      if (!cpos) return;
-        const offsetStartX = ppos.width * 0.05;  // 5% del ancho
-        const offsetStartY = ppos.height * 0.05; // 5% del alto
-        const offsetEndX = cpos.width * 0.05;
-        const offsetEndY = cpos.height * 0.05;
+const buildPaths = (node: TreeNodeType) => {
+  if (!node.children) return;
+  const ppos = positions[node.id];
+  if (!ppos) return;
+  node.children.forEach((child) => {
+    const cpos = positions[child.id];
+    if (!cpos) return;
 
-        const x1 = ppos.x + ppos.width/2 + offsetStartX;
-        const y1 = ppos.y + ppos.height + offsetStartY;
-        const x2 = cpos.x + cpos.width/2 + offsetEndX;
-        const y2 = cpos.y - offsetEndY; // restamos un poquito para salir del nodo hijo
+    const x1 = ppos.x + ppos.width / 2;
+    const y1 = ppos.y + ppos.height;
+    const x2 = cpos.x + cpos.width / 2;
+    const y2 = cpos.y;
 
-      const midY = y1 + (y2 - y1) / 2;
-      paths.push({
-        d: `M ${x1},${y1} C ${x1},${midY} ${x2},${midY} ${x2},${y2}`,
-        key: `${node.id}-${child.id}`,
-        color: node.isAnswer ? "#16a34a" : "#646cff",
-      });
-      buildPaths(child);
+    const midY = y1 + (y2 - y1) / 2;
+
+    paths.push({
+      d: `M ${x1},${y1} C ${x1},${midY} ${x2},${midY} ${x2},${y2}`,
+      key: `${node.id}-${child.id}`,
+      color: node.isAnswer ? "#16a34a" : "#646cff",
     });
-  };
+
+    buildPaths(child);
+  });
+};
 
   buildPaths(node);
 

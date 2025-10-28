@@ -19,6 +19,7 @@ export default function NavBarComponent() {
     const options = [
         { title: "Dashboard", name: "Inicio", route: "/" },
         { title: "Árbol de decisiones", name: "Árbol de decisiones", route: "/decision-tree" },
+        { title: "Decision Tree Survey", name: "Encuestas", route: "/decision-tree-survey" },
         { title: "Sobre nosotros", name: "Sobre nosotros", route: "/about-us" },
     ];
 

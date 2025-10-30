@@ -40,7 +40,7 @@ export interface EstudiantesData {
 export interface ProfesoresData {
   total: number;
   plataformas: GrupoData;
-  experiencia: ExperienciaData;
+  Experiencia: ExperienciaData;
 }
 
 export interface DataDetails {

@@ -11,7 +11,7 @@ export default function VennPlatformsStudentsGroup({
   if (!plataformas) return null;
 
   return (
-    <>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 justify-items-center">
       {Object?.entries(plataformas)?.map(([nombre, valores]) => (
         <VennRolePlatform
           key={nombre}
@@ -24,6 +24,6 @@ export default function VennPlatformsStudentsGroup({
           }}
         />
       ))}
-    </>
+    </div>
   );
 }

@@ -10,7 +10,7 @@ import {
   Legend,
 } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-import type { EstudiantesData } from "../../../types/dashboardTypes";
+import type { ProfesoresData } from "../../../types/dashboardTypes";
 
 ChartJS.register(
   BarController,
@@ -23,34 +23,34 @@ ChartJS.register(
   ChartDataLabels
 );
 
-export const BarStudentsLevel: React.FC<{ data: EstudiantesData }> = ({
+export const BarTeachersExperience: React.FC<{ data: ProfesoresData }> = ({
   data,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const chartInstanceRef = useRef<ChartJS | null>(null);
 
   useEffect(() => {
-    if (!data?.niveles) return;
+    if (!data?.Experiencia) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const existingChart = ChartJS.getChart(ctx);
-    if (existingChart) existingChart.destroy();
+    if (chartInstanceRef.current) chartInstanceRef.current.destroy();
 
-    const labels = Object.keys(data.niveles);
-    const totals = Object.values(data.niveles).map((n) => n.total);
+    const labels = Object.keys(data.Experiencia);
+    const totals = Object.values(data.Experiencia).map((n) => n.total);
 
-    const chart = new ChartJS(ctx, {
+    chartInstanceRef.current = new ChartJS(ctx, {
       type: "bar",
       data: {
         labels,
         datasets: [
           {
-            label: "Total de Estudiantes",
+            label: "Total de Profesores",
             data: totals,
-            backgroundColor: ["#22C55E", "#4ADE80", "#86EFAC"],
+            backgroundColor: ["#3B82F6", "#60A5FA", "#93C5FD"],
             borderRadius: 10,
             borderSkipped: false,
           },
@@ -67,7 +67,7 @@ export const BarStudentsLevel: React.FC<{ data: EstudiantesData }> = ({
           },
           title: {
             display: true,
-            text: "Distribución de Estudiantes por Nivel Académico",
+            text: "Distribución de Profesores por Años de Experiencia",
             color: "#FFFFFF",
             font: { size: 18, weight: "bold" },
             padding: { top: 10, bottom: 20 },
@@ -83,7 +83,7 @@ export const BarStudentsLevel: React.FC<{ data: EstudiantesData }> = ({
             backgroundColor: "#1E293B",
             titleColor: "#F1F5F9",
             bodyColor: "#E2E8F0",
-            borderColor: "#22C55E",
+            borderColor: "#3B82F6",
             borderWidth: 1,
             cornerRadius: 10,
           },
@@ -103,7 +103,9 @@ export const BarStudentsLevel: React.FC<{ data: EstudiantesData }> = ({
       plugins: [ChartDataLabels],
     });
 
-    return () => chart.destroy();
+    return () => {
+      if (chartInstanceRef.current) chartInstanceRef.current.destroy();
+    };
   }, [data]);
 
   return (

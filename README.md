@@ -68,8 +68,8 @@ Esto permite analizar los patrones de respuesta y las similitudes entre distinto
 ## 🚀 Instalación y ejecución
 ### 1️⃣ Clonar el repositorio
 ```bash
-git clone https://github.com/tu-usuario/dashboard-matematicas-discretas.git
-cd dashboard-matematicas-discretas
+git clone https://github.com/Lorainnenava/MDiscretasProject.git
+cd MDiscretasProject/vite-project
 ```
 
 ### 2️⃣ Instalar dependencias

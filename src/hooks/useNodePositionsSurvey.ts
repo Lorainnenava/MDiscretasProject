@@ -10,8 +10,10 @@ export const useNodePositionsSurvey = () => {
   const measure = useCallback(() => {
     const cont = containerRef.current;
     if (!cont) return;
+
     const contRect = cont.getBoundingClientRect();
     const next: Record<string, Pos> = {};
+
     Object.entries(nodeRefs.current).forEach(([id, el]) => {
       if (!el) return;
       const r = el.getBoundingClientRect();
@@ -22,18 +24,28 @@ export const useNodePositionsSurvey = () => {
         height: r.height,
       };
     });
+
     setPositions(next);
   }, []);
 
   useLayoutEffect(() => {
-    const timeout = setTimeout(() => measure(), 600);
-    const ro = new ResizeObserver(() => measure());
+    // 🔹 medir tras montaje y cada cambio visual
+    const measureAfterFrame = () => requestAnimationFrame(measure);
+    measureAfterFrame();
+
+    // medir de nuevo tras un pequeño retraso
+    const timeout = setTimeout(measure, 300);
+
+    const ro = new ResizeObserver(() => measureAfterFrame());
     if (containerRef.current) ro.observe(containerRef.current);
-    window.addEventListener("resize", measure);
+    Object.values(nodeRefs.current).forEach((n) => n && ro.observe(n));
+
+    window.addEventListener("resize", measureAfterFrame);
+
     return () => {
       clearTimeout(timeout);
       ro.disconnect();
-      window.removeEventListener("resize", measure);
+      window.removeEventListener("resize", measureAfterFrame);
     };
   }, [measure]);
 

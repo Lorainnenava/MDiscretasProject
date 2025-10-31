@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNodePositions } from "../hooks/useNodePositions";
 import { TreeNode } from "../Components/TreeNode";
@@ -18,7 +18,6 @@ export default function DecisionTreePage() {
   const [loadingTree, setLoadingTree] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // 🔹 Cargar usuarios
   useEffect(() => {
     const loadUsers = async () => {
       try {
@@ -40,7 +39,7 @@ useEffect(() => {
       setLoadingTree(true);
       const data = await fetchTreeData(selectedUser);
       setTreeData(data);
-      setTimeout(() => measure(), 600); // 🔹 asegura que las líneas se dibujen bien
+      setTimeout(() => measure(), 600); 
     } catch (err) {
       console.error(err);
       setError("No se pudo cargar el árbol del usuario.");
@@ -62,15 +61,14 @@ useEffect(() => {
 
 return (
   <div className="w-screen h-screen flex bg-[#001f36] text-white overflow-hidden">
-    {/* Panel lateral */}
-    <div className="w-[20%] min-w-[350px] px-5 py-12 flex flex-col justify-start">
+    <div className="w-[20%] min-w-[380px] px-8 py-15 flex flex-col justify-start">
       {loadingUsers ? (
         <p className="text-gray-400 mb-6">Cargando usuarios...</p>
       ) : (
         <select
           value={selectedUser ?? ""}
           onChange={(e) => setSelectedUser(Number(e.target.value))}
-          className="bg-[#001f36] border border-[#535bf2] rounded p-2 text-white mb-8 focus:outline-none focus:ring-2 focus:ring-[#646cff]"
+          className="bg-[#001f36] border border-[#535bf2] rounded p-2 text-white mb-8 focus:outline-none focus:ring-2 focus:ring-[#646cff] focus:border-transparent "
         >
           <option value="">-- Selecciona un usuario --</option>
           {users.map((user) => (
@@ -80,8 +78,6 @@ return (
           ))}
         </select>
       )}
-
-      {/* 🔹 Descripción del árbol */}
       <motion.h1
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
@@ -129,16 +125,20 @@ return (
 
       {error && <p className="text-red-400 mt-4">{error}</p>}
     </div>
-
-    {/* 🔹 Árbol */}
     <div
       ref={containerRef}
-      className="relative flex-1 flex items-start justify-center overflow-y-auto overflow-x-hidden p-6 w-full max-w-full"
+      className="relative flex-1 flex items-start justify-center overflow-y-auto overflow-x-hidden p-3 w-full max-w-full"
     >
       {!selectedUser ? (
-        <p className="text-gray-400 text-lg mt-10">
-          Selecciona un usuario para ver su árbol.
-        </p>
+        <motion.p
+          className="text-gray-300 text-lg mt-10 tracking-wide text-center"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          Selecciona un usuario para visualizar su árbol de decisiones.
+        </motion.p>
+
       ) : loadingTree ? (
         <p className="text-gray-400 text-lg mt-10">Cargando árbol...</p>
       ) : treeData ? (

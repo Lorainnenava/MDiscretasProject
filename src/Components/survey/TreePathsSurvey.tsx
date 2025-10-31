@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import type { TreeNodeType } from "../../Data/treeDataSurvey";
 import type { Pos } from "../../hooks/useNodePositionsSurvey";
@@ -9,32 +9,41 @@ interface TreePathsProps {
 }
 
 export const TreePaths: React.FC<TreePathsProps> = ({ node, positions }) => {
-  const paths: { d: string; key: string; color: string }[] = [];
+  const paths = useMemo(() => {
+    const result: { d: string; key: string; color: string }[] = [];
 
-  const buildPaths = (node: TreeNodeType) => {
-    if (!node.children) return;
-    const ppos = positions[node.id];
-    if (!ppos) return;
-    node.children.forEach((child) => {
-      const cpos = positions[child.id];
-      if (!cpos) return;
+    const buildPaths = (node: TreeNodeType) => {
+      if (!node.children) return;
+      const ppos = positions[node.id];
+      if (!ppos) return;
 
-      const x1 = ppos.x + ppos.width / 2;
-      const y1 = ppos.y + ppos.height;
-      const x2 = cpos.x + cpos.width / 2;
-      const y2 = cpos.y;
+      node.children.forEach((child) => {
+        const cpos = positions[child.id];
+        if (!cpos) return;
 
-      const midY = y1 + (y2 - y1) / 2;
-      paths.push({
-        d: `M ${x1},${y1} C ${x1},${midY} ${x2},${midY} ${x2},${y2}`,
-        key: `${node.id}-${child.id}`,
-        color: node.isAnswer ? "#22c55e" : "#646cff",
+        const x1 = ppos.x + ppos.width / 2;
+        const y1 = ppos.y + ppos.height;
+        const x2 = cpos.x + cpos.width / 2;
+        const y2 = cpos.y;
+
+        const midY = y1 + (y2 - y1) / 2;
+
+        result.push({
+          d: `M ${x1},${y1} C ${x1},${midY} ${x2},${midY} ${x2},${y2}`,
+          key: `${node.id}-${child.id}`,
+          color: node.isAnswer ? "#22c55e" : "#646cff",
+        });
+
+        buildPaths(child);
       });
-      buildPaths(child);
-    });
-  };
+    };
 
-  buildPaths(node);
+    buildPaths(node);
+    return result;
+  }, [node, positions]);
+
+  // 🔹 Si aún no hay posiciones medidas, no dibujar nada
+  if (!Object.keys(positions).length) return null;
 
   return (
     <svg className="absolute top-0 left-0 w-full h-full pointer-events-none">
@@ -47,7 +56,7 @@ export const TreePaths: React.FC<TreePathsProps> = ({ node, positions }) => {
           fill="none"
           initial={{ pathLength: 0 }}
           animate={{ pathLength: 1 }}
-          transition={{ duration: 0.6, type: "tween" }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
         />
       ))}
     </svg>

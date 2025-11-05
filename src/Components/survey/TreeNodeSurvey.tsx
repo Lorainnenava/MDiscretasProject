@@ -6,6 +6,7 @@ interface TreeNodeProps {
   node: TreeNodeType;
   nodeRefs: React.MutableRefObject<Record<string, HTMLElement | null>>;
   zoom: number;
+  measure: () => void; // ✅ agregado
 }
 
 const questionColors = {
@@ -22,10 +23,10 @@ const answerColors = {
   bgTo: "#001f36",
 };
 
-export const TreeNode: React.FC<TreeNodeProps> = ({ node, nodeRefs, zoom }) => {
+export const TreeNode: React.FC<TreeNodeProps> = ({ node, nodeRefs, zoom, measure }) => {
   const colorSet = node.isAnswer ? answerColors : questionColors;
   const size = 140 * zoom;
-  const fontSize = 0.9 * zoom + "rem";
+  const fontSize = 1.1 * zoom + "rem";
   const padding = 10 * zoom;
   const marginTop = 70 * zoom; 
   const gap = 30 * zoom;
@@ -37,30 +38,47 @@ export const TreeNode: React.FC<TreeNodeProps> = ({ node, nodeRefs, zoom }) => {
         initial={{ opacity: 0, scale: 0.7, y: -30 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
+        onAnimationComplete={() => measure()} // ✅ aquí
       >
-        <motion.div
-          className="flex items-center justify-center rounded-full text-center border-2 font-semibold cursor-pointer select-none"
+    <motion.div
+        className="group relative flex items-center justify-center rounded-full text-center border-2 font-semibold cursor-pointer select-none"
+        style={{
+          width: size,
+          height: size,
+          padding,
+          fontSize,
+          color: "#f9fafb",
+          lineHeight: "1.3rem",
+          borderColor: colorSet.border,
+          background: `linear-gradient(145deg, ${colorSet.bgFrom}, ${colorSet.bgTo})`,
+          boxShadow: `0 6px 16px ${colorSet.shadow}`,
+          textShadow: "0 1px 3px rgba(0,0,0,0.4)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        whileHover={{ scale: 1.07 }}
+        animate={{
+          scale: [1, 1.03, 1],
+          transition: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+        }}
+      >
+        <p
           style={{
-            width: size,
-            height: size,
-            padding,
-            fontSize,
-            color: "#f9fafb",
-            lineHeight: "1.3rem",
-            borderColor: colorSet.border,
-            background: `linear-gradient(145deg, ${colorSet.bgFrom}, ${colorSet.bgTo})`,
-            boxShadow: `0 6px 16px ${colorSet.shadow}`,
-            textShadow: "0 1px 3px rgba(0,0,0,0.4)",
-          }}
-          whileHover={{ scale: 1.07 }}
-          animate={{
-            scale: [1, 1.03, 1],
-            transition: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+            overflow: "hidden",
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
           }}
         >
           {node.label}
-        </motion.div>
+        </p>
+        {/* tooltip */}
+        <div className="absolute hidden group-hover:flex z-50 w-max max-w-xs px-3 py-2 bg-[#001f36] border border-[#6f73ff] rounded-xl text-xs text-white shadow-xl -left-2 left-1/2 -translate-x-1/2 translate-y-full">
+          {node.label}
+        </div>
       </motion.div>
+         </motion.div>
 
       {node.children && (
         <div
@@ -68,7 +86,7 @@ export const TreeNode: React.FC<TreeNodeProps> = ({ node, nodeRefs, zoom }) => {
           style={{ marginTop, gap }}
         >
           {node.children.map((child) => (
-            <TreeNode key={child.id} node={child} nodeRefs={nodeRefs} zoom={zoom} />
+            <TreeNode key={child.id} node={child} nodeRefs={nodeRefs} zoom={zoom} measure={measure} />
           ))}
         </div>
       )}

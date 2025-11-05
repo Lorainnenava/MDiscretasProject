@@ -6,8 +6,8 @@ import { TreePaths } from "../Components/survey/TreePathsSurvey";
 import type { TreeNodeType } from "../Data/treeDataSurvey";
 
 export default function DecisionTreeSurveyPage() {
-  const { containerRef, nodeRefs, positions, measure } = useNodePositionsSurvey();
-  const [zoom, setZoom] = useState(0.6);
+  const { containerRef, nodeRefs, positions, measure, isReady } = useNodePositionsSurvey();
+  const [zoom, setZoom] = useState(0.7);
   const [treeData, setTreeData] = useState<TreeNodeType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -76,11 +76,11 @@ export default function DecisionTreeSurveyPage() {
           </button>
         </div>
 
-        {/* 🔹 Render del árbol */}
-        <TreePaths node={treeData} positions={positions} />
-        <div className="flex flex-col items-center w-max">
-          <TreeNode node={treeData} nodeRefs={nodeRefs} zoom={zoom} />
-        </div>
+      {isReady && <TreePaths node={treeData} positions={positions} />}
+      <div className="flex flex-col items-center w-max">
+        <TreeNode node={treeData} nodeRefs={nodeRefs} zoom={zoom} measure={measure}/>
+      </div>
+
       </div>
     </div>
   );

@@ -61,7 +61,7 @@ useEffect(() => {
 
 return (
   <div className="w-screen h-screen flex bg-[#001f36] text-white overflow-hidden">
-    <div className="w-[20%] min-w-[380px] px-8 py-15 flex flex-col justify-start">
+    <div className="w-[25%] min-w-[380px] px-8 py-30 flex flex-col justify-start">
       {loadingUsers ? (
         <p className="text-gray-400 mb-6">Cargando usuarios...</p>
       ) : (
@@ -127,7 +127,7 @@ return (
     </div>
     <div
       ref={containerRef}
-      className="relative flex-1 flex items-start justify-center overflow-y-auto overflow-x-hidden p-3 w-full max-w-full"
+      className="relative flex-1 flex items-start justify-center overflow-y-auto overflow-x-hidden p-10 w-full max-w-full"
     >
       {!selectedUser ? (
         <motion.p

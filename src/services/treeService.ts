@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { TreeNodeType } from "../Data/treeData";
 
-const API_BASE = "https://q8857f8j-3000.use2.devtunnels.ms/api";
+const API_BASE = "https://proyecto-universidad.onrender.com/api";
 
 // 🔹 Traer todos los usuarios
 export async function fetchUsers() {

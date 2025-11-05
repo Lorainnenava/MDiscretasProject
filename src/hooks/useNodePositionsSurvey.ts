@@ -5,7 +5,9 @@ export type Pos = { x: number; y: number; width: number; height: number };
 export const useNodePositionsSurvey = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const nodeRefs = useRef<Record<string, HTMLElement | null>>({});
+
   const [positions, setPositions] = useState<Record<string, Pos>>({});
+  const [isReady, setIsReady] = useState(false); // ✅ agregado
 
   const measure = useCallback(() => {
     const cont = containerRef.current;
@@ -29,25 +31,37 @@ export const useNodePositionsSurvey = () => {
   }, []);
 
   useLayoutEffect(() => {
-    // 🔹 medir tras montaje y cada cambio visual
-    const measureAfterFrame = () => requestAnimationFrame(measure);
-    measureAfterFrame();
+    // medir después del primer frame
+    requestAnimationFrame(() => {
+      measure();
+      setIsReady(true); // ✅ agregado
+    });
 
-    // medir de nuevo tras un pequeño retraso
-    const timeout = setTimeout(measure, 300);
+    // medir de nuevo tras un pequeño delay
+    const timeout = setTimeout(() => {
+      measure();
+      setIsReady(true); // ✅ agregado
+    }, 300);
 
-    const ro = new ResizeObserver(() => measureAfterFrame());
+    const ro = new ResizeObserver(() => {
+      requestAnimationFrame(() => {
+        measure();
+        setIsReady(true); // ✅ agregado
+      });
+    });
+
     if (containerRef.current) ro.observe(containerRef.current);
     Object.values(nodeRefs.current).forEach((n) => n && ro.observe(n));
 
-    window.addEventListener("resize", measureAfterFrame);
+    window.addEventListener("resize", measure);
 
     return () => {
       clearTimeout(timeout);
       ro.disconnect();
-      window.removeEventListener("resize", measureAfterFrame);
+      window.removeEventListener("resize", measure);
     };
   }, [measure]);
 
-  return { containerRef, nodeRefs, positions, measure };
+  // ✅ ahora también regresamos isReady
+  return { containerRef, nodeRefs, positions, measure, isReady };
 };

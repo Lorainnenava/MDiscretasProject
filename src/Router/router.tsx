@@ -3,6 +3,8 @@ import NavBarComponent from "../Components/NavBarComponent";
 import DashboardPage from "../Pages/DashboardPage";
 import DecisionTreePage from "../Pages/DecisionTreePage";
 import AboutUsPage from "../Pages/AboutUsPage";
+import DecisionTreeSurveyPage from "../Pages/DecisionTreeSurveyPage";
+
 
 export const router = createBrowserRouter([
     {
@@ -16,6 +18,10 @@ export const router = createBrowserRouter([
             {
                 path: "decision-tree",
                 element: <DecisionTreePage />,
+            },
+         {
+                path: "decision-tree-survey",
+                element: <DecisionTreeSurveyPage />,
             },
             {
                 path: "about-us",

@@ -1,0 +1,57 @@
+import React from "react";
+import { motion } from "framer-motion";
+import type { TreeNodeType } from "../Data/treeData";
+import type { Pos } from "../hooks/useNodePositions";
+
+interface TreePathsProps {
+  node: TreeNodeType;
+  positions: Record<string, Pos>;
+}
+
+export const TreePaths: React.FC<TreePathsProps> = ({ node, positions }) => {
+  const paths: { d: string; key: string; color: string }[] = [];
+
+const buildPaths = (node: TreeNodeType) => {
+  if (!node.children) return;
+  const ppos = positions[node.id];
+  if (!ppos) return;
+  node.children.forEach((child) => {
+    const cpos = positions[child.id];
+    if (!cpos) return;
+
+    const x1 = ppos.x + ppos.width / 2;
+    const y1 = ppos.y + ppos.height;
+    const x2 = cpos.x + cpos.width / 2;
+    const y2 = cpos.y;
+
+    const midY = y1 + (y2 - y1) / 2;
+
+    paths.push({
+      d: `M ${x1},${y1} C ${x1},${midY} ${x2},${midY} ${x2},${y2}`,
+      key: `${node.id}-${child.id}`,
+      color: node.isAnswer ? "#16a34a" : "#646cff",
+    });
+
+    buildPaths(child);
+  });
+};
+
+  buildPaths(node);
+
+  return (
+    <svg className="absolute top-0 left-0 w-full h-full pointer-events-none">
+      {paths.map((p) => (
+        <motion.path
+          key={p.key}
+          d={p.d}
+          stroke={p.color}
+          strokeWidth={2}
+          fill="none"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 0.5, type: "tween" }}
+        />
+      ))}
+    </svg>
+  );
+};

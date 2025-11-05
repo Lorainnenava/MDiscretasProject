@@ -10,7 +10,7 @@ import type { TreeNodeType } from "../Data/treeDataSurvey";
 
 export default function DecisionTreeSurveyPage() {
   const { containerRef, nodeRefs, positions, measure, isReady } = useNodePositionsSurvey();
-  const [zoom, setZoom] = useState(0.7);
+  const [zoom, setZoom] = useState(0.6);
   const [treeData, setTreeData] = useState<TreeNodeType | null>(null);
   const [dataDashboard, setDataDashboard] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);

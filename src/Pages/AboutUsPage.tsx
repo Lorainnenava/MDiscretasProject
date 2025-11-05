@@ -5,68 +5,69 @@ export default function AboutUsPage() {
     {
       title: "📚 Fundamentos Matemáticos",
       description:
-        "El proyecto se sustenta en los principales modelos de la Matemática Discreta: los diagramas de Venn para representar conjuntos e intersecciones, los grafos para modelar relaciones entre elementos y los árboles de decisión para visualizar caminos lógicos de elección.",
+        "Este proyecto se basa en los conceptos fundamentales de la Matemática Discreta, específicamente en los diagramas de Venn para representar conjuntos e intersecciones, y los árboles para modelar decisiones o relaciones jerárquicas.",
       color: "#0EA5E9",
     },
     {
       title: "🎯 Objetivo del Proyecto",
       description:
-        "Este proyecto busca aplicar conceptos de Matemáticas Discretas, como grafos y diagramas de Venn, para analizar de manera visual la información obtenida de una encuesta aplicada a estudiantes y profesores.",
+        "El propósito del proyecto es aplicar los conceptos de conjuntos y árboles para analizar y visualizar los resultados de una encuesta realizada a estudiantes y profesores, utilizando representaciones gráficas claras e interactivas.",
       color: "#3B82F6",
     },
     {
-      title: "📊 Dashboard Analítico",
+      title: "📊 Dashboard Interactivo",
       description:
-        "El sistema presenta un dashboard interactivo donde se muestran distribuciones de estudiantes y profesores, junto con intersecciones entre plataformas y roles mediante gráficos dinámicos.",
+        "Se desarrolló un dashboard dinámico que permite visualizar la distribución de los datos mediante diagramas de Venn y estructuras de árbol. Los usuarios pueden comparar conjuntos y explorar relaciones de manera intuitiva.",
       color: "#22C55E",
     },
     {
-      title: "🌐 Árbol de Decisiones",
+      title: "🌳 Árboles",
       description:
-        "Incluye una vista que representa las decisiones de los usuarios usando un grafo 2D. Se pueden filtrar las respuestas por usuario y visualizar los nodos (preguntas, opciones y respuestas).",
+        "Los árboles representan rutas de decisión o jerarquías entre categorías. En este proyecto, se utilizan para mostrar las relaciones entre las respuestas o niveles de un grupo determinado.",
       color: "#A855F7",
     },
     {
-      title: "🧠 Conceptos Aplicados",
+      title: "🟣 Diagramas de Venn",
       description:
-        "El proyecto combina teoría y práctica utilizando grafos, conjuntos y relaciones para representar la estructura de decisiones y los datos obtenidos de las encuestas.",
+        "Los diagramas de Venn se usan para mostrar cómo se cruzan los conjuntos (por ejemplo, estudiantes y profesores, o las plataformas más usadas). Son una herramienta clave para visualizar intersecciones de datos.",
       color: "#F59E0B",
     },
     {
       title: "💻 Tecnologías Utilizadas",
       description:
-        "React + TypeScript, Tailwind CSS, Chart.js, Framer Motion, React Force Graph y Axios para la comunicación con la API. Todo desarrollado en un entorno rápido y moderno con Vite.",
+        "El proyecto fue desarrollado con React + TypeScript, Tailwind CSS, Chart.js y Framer Motion para las animaciones. Todo dentro de un entorno moderno y eficiente con Vite.",
       color: "#EC4899",
     },
   ];
 
   const conceptos = [
     {
-      title: "🔵 Diagramas de Venn",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/3/30/Venn0111.svg",
+      title: "🟣 Diagramas de Venn",
+      image: "https://upload.wikimedia.org/wikipedia/commons/3/30/Venn0111.svg",
       description:
-        "Permiten representar visualmente las relaciones e intersecciones entre conjuntos. En este proyecto, se utilizan para mostrar cómo se cruzan las preferencias entre plataformas o roles.",
+        "Permiten representar visualmente las relaciones e intersecciones entre conjuntos. En este proyecto se utilizan para comparar grupos como estudiantes, profesores o el uso de plataformas.",
     },
     {
-      title: "🟣 Árboles de Decisión",
+      title: "🌳 Árboles",
       image:
-        "https://www.shutterstock.com/image-vector/decision-tree-machine-learning-color-600nw-2600916119.jpg",
+        "https://www.ecured.cu/images/7/73/Arbol_Elementos.gif",
       description:
-        "Se utilizan para mostrar el proceso de selección de opciones. Cada nodo representa una pregunta u opción y las ramas reflejan las respuestas del usuario.",
+        "Los árboles muestran estructuras jerárquicas o caminos de decisión. Son útiles para analizar opciones o clasificaciones dentro de los datos de la encuesta.",
     },
   ];
 
   return (
     <div className="min-h-screen bg-[#0F172A] text-white flex flex-col items-center py-12 px-6">
-      <h1 className="text-4xl font-bold mb-8 text-center">
-        Sobre Nosotros 🌱
-      </h1>
-      <p className="text-gray-300 text-center max-w-3xl mb-12">
-        Somos estudiantes de <strong>8.º semestre de Ingeniería de Sistemas</strong>.
-        Este proyecto es nuestro trabajo final de <strong>Matemáticas Discretas</strong>, el cual
-        aplica análisis de datos y visualizaciones interactivas para llevar la teoría a la práctica.</p>
+      <h1 className="text-4xl font-bold mb-8 text-center">Sobre Nosotros 🌱</h1>
 
+      <p className="text-gray-300 text-center max-w-3xl mb-12">
+        Somos estudiantes de <strong>8.º semestre de Ingeniería de Sistemas</strong>.  
+        Este proyecto corresponde al trabajo final de <strong>Matemáticas Discretas</strong>,  
+        donde aplicamos los conceptos de <strong>conjuntos</strong> y <strong>árboles</strong>  
+        mediante representaciones gráficas y visualizaciones interactivas.
+      </p>
+
+      {/* Tarjetas principales */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {cards.map((card, index) => (
           <motion.div
@@ -91,8 +92,7 @@ export default function AboutUsPage() {
         ))}
       </div>
 
-
-      {/* Nueva sección de conceptos */}
+      {/* Sección de conceptos */}
       <h2 className="text-3xl font-bold mt-20 mb-10 text-center">
         🧩 Conceptos Clave Aplicados
       </h2>
@@ -110,7 +110,7 @@ export default function AboutUsPage() {
             <img
               src={concept.image}
               alt={concept.title}
-              className="w-full h-50 object-cover"
+              className="w-full h-56 object-contain bg-[#0F172A]"
             />
             <div className="p-5">
               <h3 className="text-lg font-semibold mb-2 text-[#22C55E]">
@@ -123,7 +123,7 @@ export default function AboutUsPage() {
       </div>
 
       <footer className="mt-16 text-gray-500 text-sm text-center">
-        © 2025 Proyecto Matemáticas Discretas – Todos los derechos reservados
+        © 2025 Proyecto Matemáticas Discretas – Árboles y Diagramas de Venn
       </footer>
     </div>
   );

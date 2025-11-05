@@ -75,8 +75,9 @@ export const BarTeachersExperience: React.FC<{ data: ProfesoresData }> = ({
           datalabels: {
             color: "#F8FAFC",
             anchor: "end",
-            align: "top",
-            font: { weight: "bold" },
+            align: "start",
+            offset: -4,
+            font: { weight: "bold", size: 14 },
             formatter: (value: number) => value,
           },
           tooltip: {

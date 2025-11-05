@@ -49,13 +49,6 @@ export default function AboutUsPage() {
         "Permiten representar visualmente las relaciones e intersecciones entre conjuntos. En este proyecto, se utilizan para mostrar cómo se cruzan las preferencias entre plataformas o roles.",
     },
     {
-      title: "🟢 Grafos",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/5/5b/6n-graf.svg",
-      description:
-        "Los grafos representan relaciones entre entidades (nodos y aristas). Aquí los usamos para visualizar las decisiones de los usuarios dentro del árbol interactivo.",
-    },
-    {
       title: "🟣 Árboles de Decisión",
       image:
         "https://www.shutterstock.com/image-vector/decision-tree-machine-learning-color-600nw-2600916119.jpg",
@@ -104,7 +97,7 @@ export default function AboutUsPage() {
         🧩 Conceptos Clave Aplicados
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-7xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-7xl mx-auto">
         {conceptos.map((concept, i) => (
           <motion.div
             key={i}

@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
-import { fetchQuestionsSummary } from "../services/treeService";
 import { useNodePositionsSurvey } from "../hooks/useNodePositionsSurvey";
 import { TreeNode } from "../Components/survey/TreeNodeSurvey";
 import { TreePaths } from "../Components/survey/TreePathsSurvey";
+import { fetchQuestionsSummary } from "../services/treeService";
+import api from "../Api/api";
+import CarComponent from "../Components/CarComponent"; // ✅ Importamos el mismo componente de dashboard
+import type { DashboardData } from "../types/dashboardTypes";
 import type { TreeNodeType } from "../Data/treeDataSurvey";
 
 export default function DecisionTreeSurveyPage() {
   const { containerRef, nodeRefs, positions, measure, isReady } = useNodePositionsSurvey();
   const [zoom, setZoom] = useState(0.7);
   const [treeData, setTreeData] = useState<TreeNodeType | null>(null);
+  const [dataDashboard, setDataDashboard] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,11 +29,17 @@ export default function DecisionTreeSurveyPage() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const data = await fetchQuestionsSummary();
-        setTreeData(data);
-      } catch (err: any) {
+        setLoading(true);
+
+        const tree = await fetchQuestionsSummary();
+        setTreeData(tree);
+
+        const { data } = await api.get<DashboardData>("/venn_data");
+        setDataDashboard(data);
+
+      } catch (err) {
         console.error("Error al cargar datos:", err);
-        setError("No se pudieron cargar los datos del árbol de decisiones.");
+        setError("No se pudieron cargar los datos del árbol o del dashboard.");
       } finally {
         setLoading(false);
       }
@@ -41,7 +51,7 @@ export default function DecisionTreeSurveyPage() {
   if (loading) {
     return (
       <div className="w-screen h-screen flex items-center justify-center bg-[#001f36] text-white">
-        <p className="text-lg">Cargando árbol de decisiones...</p>
+        <p className="text-lg">Cargando información...</p>
       </div>
     );
   }
@@ -55,12 +65,15 @@ export default function DecisionTreeSurveyPage() {
   }
 
   return (
-    <div className="w-screen h-screen flex bg-[#001f36] text-white overflow-hidden">
+    <div className="w-screen h-screen flex flex-col bg-[#001f36] text-white overflow-hidden">
+      <div className="w-full py-6 px-10 bg-[#001F36] shadow-lg border-b border-[#2c2f48]">
+        <CarComponent data={dataDashboard?.summary ?? []} /> {/* ✅ igual que en DashboardPage */}
+      </div>
+
       <div
         ref={containerRef}
         className="relative flex-1 flex items-start justify-center overflow-y-auto overflow-x-hidden p-8"
       >
-        {/* 🔹 Botones de zoom */}
         <div className="absolute top-6 left-6 flex flex-col gap-2 z-20">
           <button
             className="w-8 h-8 bg-[#646cff] rounded-md hover:bg-[#535bf2] flex items-center justify-center font-bold text-lg shadow-md"
@@ -76,11 +89,11 @@ export default function DecisionTreeSurveyPage() {
           </button>
         </div>
 
-      {isReady && <TreePaths node={treeData} positions={positions} />}
-      <div className="flex flex-col items-center w-max">
-        <TreeNode node={treeData} nodeRefs={nodeRefs} zoom={zoom} measure={measure}/>
-      </div>
+        {isReady && <TreePaths node={treeData} positions={positions} />}
 
+        <div className="flex flex-col items-center w-max">
+          <TreeNode node={treeData} nodeRefs={nodeRefs} zoom={zoom} measure={measure} />
+        </div>
       </div>
     </div>
   );

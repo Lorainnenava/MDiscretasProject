@@ -1,7 +1,7 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 export default function NavBarComponent() {
-    const location = useLocation();
+  const location = useLocation();
 
     const getTitle = () => {
         switch (location.pathname) {
